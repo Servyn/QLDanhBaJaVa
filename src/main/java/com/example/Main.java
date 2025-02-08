@@ -1,27 +1,46 @@
 package com.example;
 
 import java.io.FileWriter;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Contact ct1 = new Contact("Cường",
-                "0123456789",
-                "caocuong@gmail.com",
-                "HCM");
-        Contact ct2 = new Contact("Cường2",
-                "1123456789",
-                "caocuong1@gmail.com",
-                "HCM");
+        Scanner sc = new Scanner(System.in);
         ContactManager ql1 = new ContactManager();
         FileHandler fh1 = new FileHandler();
-        ql1.addContact(ct1);
-        ql1.addContact(ct2);
-        ql1.showdanhba();
-        System.out.println("_______________");
+        Menu mn = new Menu();
         fh1.fileToDanhba(ql1.danhba);
-        ql1.showdanhba();
-        for (Contact c: ql1.danhba){
-            System.out.println("ID : " + c.getId() + " Tên : " + c.getName());
-        }
+        int choice;
+        do{
+            mn.showMenu();
+            choice = sc.nextInt();
+            sc.nextLine();
+            switch (choice){
+                case 1: {
+                    ql1.showdanhba();
+                    break;
+                }
+                case 2: {
+                    ql1.addContact();
+                    fh1.danhbaToFile(ql1.danhba);
+                    break;
+                }
+                case 3 : {
+                    ql1.changeSDT();
+                    fh1.danhbaToFile(ql1.danhba);
+                    break;
+                }
+                case 4 : {
+                    ql1.deleteContact();
+                    fh1.danhbaToFile(ql1.danhba);
+                    break;
+                }
+                case 0:
+                    break;
+                default:
+                    System.out.println("không hợp lệ.");
+                    break;
+            }
+        }while (choice != 0);
     }
 }
