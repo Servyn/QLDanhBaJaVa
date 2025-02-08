@@ -20,6 +20,27 @@ public class FileHandler {
             throw new RuntimeException(e);
         }
     }
+    public void backupDanhBa() {
+        String backupFileName = "backup_danhba.txt"; // Tên file backup
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(fileName));
+            BufferedWriter bw = new BufferedWriter(new FileWriter(backupFileName));
+
+            String line;
+            while ((line = br.readLine()) != null) {
+                bw.write(line);
+                bw.newLine(); // Xuống dòng
+            }
+
+            br.close();
+            bw.close();
+
+            System.out.println("Backup danh bạ thành công vào " + backupFileName);
+        } catch (IOException e) {
+            System.out.println("Backup thất bại!");
+            e.printStackTrace();
+        }
+    }
     public ArrayList<Contact> fileToDanhba(ArrayList<Contact> danhba) {
         try {
             FileReader fr = new FileReader(fileName);
