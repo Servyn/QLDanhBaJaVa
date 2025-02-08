@@ -8,12 +8,14 @@ public class FileHandler {
     private String fileName = "danhba.txt";
     public void danhbaToFile(ArrayList<Contact> danhba) {
         try {
-            FileWriter fw = new FileWriter(fileName,true);
+            FileWriter fw = new FileWriter(fileName);
             BufferedWriter bw = new BufferedWriter(fw);
             for ( Contact pt : danhba){
                 bw.write(pt.toString());
-                bw.close();
+                bw.newLine();
             }
+            bw.close();
+            fw.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -24,43 +26,40 @@ public class FileHandler {
             BufferedReader br = new BufferedReader(fr);
             String line;
 
-            ArrayList<Contact> tempList = new ArrayList<>(); // Danh sách tạm để chứa dữ liệu từ file
-
             while ((line = br.readLine()) != null) {
                 String[] txt = line.split(",");
-                String[] txt2 = new String[txt.length];
 
-                for (int i = 0; i < txt.length; i++) {
-                    txt2[i] = txt[i].substring(txt[i].indexOf(":") + 1).trim();
+                String name = txt[0].substring(txt[0].indexOf(":") + 1).trim();
+                String phone = txt[1].substring(txt[1].indexOf(":") + 1).trim();
+                String email = txt[2].substring(txt[2].indexOf(":") + 1).trim();
+                String address = txt[3].substring(txt[3].indexOf(":") + 1).trim();
+
+                boolean updated = false;
+                for (Contact c : danhba){
+                    if (c.getName().equals(name)) {
+                        if (c.getPhone().equals(phone)) {
+                            c.setEmail(email);
+                            c.setAddress(address);
+                            updated = true;
+                            break;
+                        } else if (c.getEmail().equals(email)) {
+                            c.setPhone(phone);
+                            c.setAddress(address);
+                            updated = true;
+                            break;
+                        }
+                    }
                 }
-
-                String name = txt2[0];
-                String phone = txt2[1];
-                String email = txt2[2];
-                String address = txt2[3];
-
-                Contact newContact = new Contact(name, phone, email, address);
-                tempList.add(newContact); // Thêm vào danh sách tạm
+                if (!updated){
+                    danhba.add(new Contact(name,phone,email,address));
+                }
             }
 
             br.close();
             fr.close();
 
             // Xóa Contact trùng trong danh bạ chính
-            Iterator<Contact> it = danhba.iterator();
-            while (it.hasNext()) {
-                Contact pt = it.next();
-                for (Contact newContact : tempList) {
-                    if (pt.getName().equals(newContact.getName()) &&
-                            (pt.getPhone().equals(newContact.getPhone()) || pt.getEmail().equals(newContact.getEmail()))) {
-                        it.remove();  // Xóa contact trùng
-                        break;
-                    }
-                }
-            }
 
-            // Thêm toàn bộ contact từ file vào danh bạ chính
-            danhba.addAll(tempList);
 
         } catch (IOException e) {
             throw new RuntimeException(e);

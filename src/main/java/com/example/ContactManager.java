@@ -21,25 +21,14 @@ public class ContactManager {
             System.out.println(c.toString());
         }
     }
-    public Contact searchContactName(String info){
-        for (Contact c : danhba){
-            if (c.getName().equals(info)){
-                return c;
-            }
-        }
-        return null;
-    }
-    public Contact searchContactPhone(String info){
+
+    public Contact searchContact(String info){
         for (Contact c : danhba){
             if (c.getPhone().equals(info)){
                 return c;
-            }
-        }
-        return null;
-    }
-    public Contact searchContactEmail(String info){
-        for (Contact c : danhba){
-            if (c.getEmail().equals(info)){
+            } else if (c.getEmail().equals(info)) {
+                return c;
+            } else if (c.getName().equals(info)) {
                 return c;
             }
         }
@@ -48,17 +37,17 @@ public class ContactManager {
     public void deleteContact(Contact contact){
         danhba.remove(contact);
     }
-    public void changeSDT (String info, String change){
+    public void changeSDT (int id, String change){
         for (Contact c : danhba){
-            if (c.getEmail().equals(info)){
+            if (c.getId() == id){
                 c.setPhone(change);
             }
         }
     }
-    public void changeEmail (String info, String change){
+    public void changeEmail (int id, String change){
         for (Contact c : danhba){
-            if (c.getPhone().equals(info)){
-                c.setPhone(change);
+            if (c.getId() == id){
+                c.setEmail(change);
             }
         }
     }
