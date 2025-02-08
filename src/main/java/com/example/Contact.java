@@ -5,17 +5,29 @@ public class Contact {
      private String phone;
      private String email;
      private String address;
+     private static int nextInt = 1;
+     private int id ;
 
     public Contact(String name, String phone, String email, String address) {
+        this.id = nextInt++;
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.address = address;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
     @Override
     public String toString() {
-        return  "Tên : " + name + '\t' +
+        return
+                "Tên : " + name + '\t' +
                 ", SĐT : " + phone + '\t' +
                 ", Email : " + email + '\t' +
                 ", Địa Chỉ : " + address;
